@@ -1,0 +1,63 @@
+# Environment
+.env
+.env.local
+.env.*.local
+*.pem
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+ENV/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+.tox/
+dist/
+build/
+
+# uv
+uv.lock.bak
+
+# Node
+node_modules/
+.next/
+out/
+.turbo/
+.pnpm-store/
+pnpm-debug.log*
+npm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Local artifacts
+*.log
+.DS_Store
+.coverage
+coverage/
+
+# Docker volumes
+postgres-data/
+
+# LibreOffice temp
+.~lock.*
+
+# Local model cache (sentence-transformers downloads to ~/.cache/huggingface by default; ignore project-local copies)
+models/
+.cache/
+
+# Generated outputs (keep examples/ but ignore scratch)
+scratch/

@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Brand tokens — Obsidian Group defaults.
+  At runtime, BrandThemeProvider can override --brand-* on the <html> element
+  to re-theme the entire UI to a different organisation's palette.
+*/
+@layer base {
+  :root {
+    /* Brand */
+    --brand-obsidian: #0d171e;
+    --brand-slate: #2c343c;
+    --brand-accent: #3a8c91;
+    --brand-stone: #6b7280;
+    --brand-hairline: #d9dee3;
+    --brand-fog: #eef1f3;
+
+    /* Surfaces — derived from the brand palette */
+    --background: #ffffff;
+    --foreground: var(--brand-obsidian);
+    --card: #ffffff;
+    --card-foreground: var(--brand-obsidian);
+    --muted: var(--brand-fog);
+    --muted-foreground: var(--brand-stone);
+    --border: var(--brand-hairline);
+    --ring: var(--brand-accent);
+
+    --radius: 0.625rem;
+
+    --font-sans: "Inter", "Aptos", system-ui, sans-serif;
+    --font-display: "Inter", "Aptos Display", system-ui, sans-serif;
+  }
+
+  html,
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+}
