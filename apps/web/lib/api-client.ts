@@ -68,6 +68,55 @@ export async function apiFetch<T>(path: string, options: RequestOptions = {}): P
   return (await response.json()) as T;
 }
 
+export type Project = {
+  id: string;
+  name: string;
+  description: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type DocumentStatus =
+  | "uploaded"
+  | "parsing"
+  | "chunking"
+  | "embedding"
+  | "ready"
+  | "failed";
+
+export type DocumentSummary = {
+  id: string;
+  project_id: string;
+  kind: string;
+  filename: string;
+  content_type: string | null;
+  size_bytes: number;
+  status: DocumentStatus;
+  error: string | null;
+  ingested_at: string | null;
+  created_at: string;
+};
+
+export type DocumentDetail = DocumentSummary & {
+  raw_text_excerpt: string | null;
+  meta: Record<string, unknown>;
+};
+
+export type RetrievedHit = {
+  chunk_id: string;
+  document_id: string;
+  document_filename: string;
+  document_kind: string;
+  score: number;
+  text: string;
+  meta: Record<string, unknown>;
+};
+
+export type RetrieveResponse = {
+  query: string;
+  hits: RetrievedHit[];
+};
+
 export const api = {
   health: () =>
     apiFetch<{
@@ -80,4 +129,33 @@ export const api = {
       embedding_dim: number;
       tracing_enabled: boolean;
     }>("/health"),
+
+  projects: {
+    list: () => apiFetch<Project[]>("/projects"),
+    get: (id: string) => apiFetch<Project>(`/projects/${id}`),
+    create: (body: { name: string; description?: string | null }) =>
+      apiFetch<Project>("/projects", { method: "POST", body }),
+  },
+
+  documents: {
+    listByProject: (projectId: string) =>
+      apiFetch<DocumentSummary[]>(`/projects/${projectId}/documents`),
+    get: (id: string) => apiFetch<DocumentDetail>(`/documents/${id}`),
+    upload: (projectId: string, file: File) => {
+      const form = new FormData();
+      form.append("file", file);
+      return apiFetch<DocumentSummary>(`/projects/${projectId}/documents`, {
+        method: "POST",
+        body: form,
+      });
+    },
+  },
+
+  retrieval: {
+    query: (projectId: string, body: { query: string; top_k?: number }) =>
+      apiFetch<RetrieveResponse>(`/projects/${projectId}/retrieve`, {
+        method: "POST",
+        body,
+      }),
+  },
 };

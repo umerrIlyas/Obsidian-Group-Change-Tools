@@ -1,28 +1,85 @@
+"use client";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { Input, Textarea } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { ApiError, api } from "@/lib/api-client";
 
-/**
- * Placeholder — Phase 2 introduces the real upload flow.
- */
 export default function NewProjectPage() {
+  const router = useRouter();
+  const [name, setName] = useState("Obsidian Group transformation");
+  const [description, setDescription] = useState("");
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!name.trim()) return;
+    setPending(true);
+    setError(null);
+    try {
+      const project = await api.projects.create({
+        name: name.trim(),
+        description: description.trim() || null,
+      });
+      router.push(`/projects/${project.id}`);
+    } catch (e) {
+      setError(e instanceof ApiError ? e.message : (e as Error).message);
+      setPending(false);
+    }
+  }
+
   return (
-    <main className="container flex min-h-screen flex-col items-center justify-center gap-6 text-center">
+    <main className="container max-w-xl py-16">
       <h1 className="font-display text-3xl font-semibold tracking-tight">
-        New project — coming in Phase 2
+        New project
       </h1>
-      <p className="max-w-md text-muted-foreground">
-        The upload flow lands in the next phase. For now you can confirm the
-        backend is reachable and the brand palette is wired correctly.
+      <p className="mt-2 text-sm text-muted-foreground">
+        A project groups source documents, your brand profile, generated briefs, and decks.
       </p>
-      <div className="flex gap-3">
-        <Button asChild>
-          <Link href="/">Back home</Link>
-        </Button>
-        <Button asChild variant="outline">
-          <Link href="/health">API health</Link>
-        </Button>
-      </div>
+
+      <form onSubmit={onSubmit} className="mt-8 flex flex-col gap-5">
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="name">Name</Label>
+          <Input
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            maxLength={200}
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="description">Description (optional)</Label>
+          <Textarea
+            id="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="What change programme is this for?"
+            rows={3}
+            maxLength={2000}
+          />
+        </div>
+
+        {error && (
+          <p className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+            {error}
+          </p>
+        )}
+
+        <div className="flex items-center gap-2">
+          <Button type="submit" disabled={pending || !name.trim()}>
+            {pending ? "Creating…" : "Create project"}
+          </Button>
+          <Button asChild variant="ghost">
+            <Link href="/projects">Cancel</Link>
+          </Button>
+        </div>
+      </form>
     </main>
   );
 }

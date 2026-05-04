@@ -94,7 +94,10 @@ select = [
     "T20",           # no print
     "PT",            # pytest style
 ]
-ignore = ["E501"]   # ruff format handles line length
+ignore = [
+    "E501",   # line length — ruff format handles it
+    "B008",   # FastAPI ``Depends(...)`` in defaults is idiomatic
+]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = ["S101"]   # asserts allowed in tests

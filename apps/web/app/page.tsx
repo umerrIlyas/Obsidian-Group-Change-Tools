@@ -27,7 +27,7 @@ export default function HomePage() {
             </span>
           </div>
           <Button asChild variant="ghost" size="sm">
-            <Link href="https://github.com">View on GitHub</Link>
+            <Link href="/projects">Projects</Link>
           </Button>
         </div>
       </header>
