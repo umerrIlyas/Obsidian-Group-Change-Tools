@@ -7,6 +7,7 @@ from changetools.api.schemas.brand import (
     UpdateBrandIn,
 )
 from changetools.api.schemas.briefs import BriefOut, BriefSummaryOut
+from changetools.api.schemas.chat import ChatMessageOut, ChatSessionOut, SendMessageIn
 from changetools.api.schemas.decks import DeckOut
 from changetools.api.schemas.documents import (
     DocumentOut,
@@ -21,6 +22,8 @@ __all__ = [
     "BrandProfileOut",
     "BriefOut",
     "BriefSummaryOut",
+    "ChatMessageOut",
+    "ChatSessionOut",
     "CreateProjectIn",
     "DeckOut",
     "DocumentOut",
@@ -31,5 +34,6 @@ __all__ = [
     "RetrieveIn",
     "RetrieveOut",
     "RetrievedHit",
+    "SendMessageIn",
     "UpdateBrandIn",
 ]

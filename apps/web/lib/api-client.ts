@@ -260,6 +260,64 @@ export type Brief = BriefSummary & {
   metrics: Record<string, string | number>;
 };
 
+// --- Chat ---------------------------------------------------------------
+
+export type ChatRole = "user" | "assistant" | "tool" | "system";
+
+export type ChatToolCall = {
+  id: string;
+  name: string;
+  args: Record<string, unknown>;
+};
+
+export type ChatSession = {
+  id: string;
+  project_id: string;
+  title: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ChatMessage = {
+  id: string;
+  session_id: string;
+  role: ChatRole;
+  content: string;
+  tool_calls: ChatToolCall[];
+  tool_call_id: string | null;
+  tool_name: string | null;
+  meta: Record<string, unknown>;
+  created_at: string;
+};
+
+export type ChatStreamEvent =
+  | { kind: "session"; session_id: string }
+  | { kind: "token"; text: string }
+  | {
+      kind: "tool_start";
+      id: string;
+      name: string;
+      args: Record<string, unknown>;
+    }
+  | { kind: "tool_end"; id: string; name: string; output: string }
+  | {
+      kind: "brief_updated";
+      brief_id: string;
+      version: number;
+      section: string;
+    }
+  | {
+      kind: "final";
+      content: string;
+      tool_calls: ChatToolCall[];
+      brief_updates: Array<{
+        brief_id: string;
+        version: number;
+        section: string;
+      }>;
+    }
+  | { kind: "error"; message: string };
+
 // --- Deck ---------------------------------------------------------------
 
 export type DeckStatus = "rendering" | "ready" | "failed";
@@ -356,6 +414,19 @@ export const api = {
     get: (deckId: string) => apiFetch<Deck>(`/decks/${deckId}`),
   },
 
+  chat: {
+    listSessions: (projectId: string) =>
+      apiFetch<ChatSession[]>(`/projects/${projectId}/chat/sessions`),
+    createSession: (projectId: string) =>
+      apiFetch<ChatSession>(`/projects/${projectId}/chat/sessions`, {
+        method: "POST",
+      }),
+    listMessages: (projectId: string, sessionId: string) =>
+      apiFetch<ChatMessage[]>(
+        `/projects/${projectId}/chat/sessions/${sessionId}/messages`,
+      ),
+  },
+
   brand: {
     get: async (projectId: string): Promise<BrandProfile | null> => {
       try {
@@ -401,6 +472,64 @@ export const api = {
 export function backendUrl(path: string): string {
   const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
   return `${base.replace(/\/+$/, "")}/${path.replace(/^\/+/, "")}`;
+}
+
+/**
+ * Stream chat messages from POST /projects/:id/chat/messages.
+ */
+export async function* streamChatMessage(
+  projectId: string,
+  body: { message: string; session_id?: string },
+  signal?: AbortSignal,
+): AsyncGenerator<ChatStreamEvent, void, void> {
+  const url = `${BASE_URL.replace(/\/+$/, "")}/projects/${projectId}/chat/messages`;
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      Accept: "text/event-stream",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+    signal,
+  });
+
+  if (!response.ok || !response.body) {
+    let bodyJson: ApiErrorBody | null = null;
+    try {
+      bodyJson = (await response.json()) as ApiErrorBody;
+    } catch {
+      // ignore
+    }
+    throw new ApiError(
+      response.status,
+      bodyJson?.error?.code ?? "http_error",
+      bodyJson?.error?.message ?? response.statusText,
+    );
+  }
+
+  const decoder = new TextDecoder();
+  const reader = response.body.getReader();
+  let buffer = "";
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    let sepIdx;
+    while ((sepIdx = buffer.indexOf("\n\n")) !== -1) {
+      const rawEvent = buffer.slice(0, sepIdx);
+      buffer = buffer.slice(sepIdx + 2);
+      const dataLines = rawEvent
+        .split("\n")
+        .filter((l) => l.startsWith("data:"))
+        .map((l) => l.slice(5).trim());
+      if (dataLines.length === 0) continue;
+      try {
+        yield JSON.parse(dataLines.join("\n")) as ChatStreamEvent;
+      } catch {
+        // skip malformed event
+      }
+    }
+  }
 }
 
 /**

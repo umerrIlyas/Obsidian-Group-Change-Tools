@@ -1,10 +1,12 @@
 "use client";
 
 import { CheckCircle2, FileText, Loader2, Sparkles, XCircle } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { BriefViewer } from "@/components/brief/brief-viewer";
 import { DeckPanel } from "@/components/brief/deck-panel";
+import { BriefVersionSelector } from "@/components/brief/version-selector";
+import { ChatPanel } from "@/components/chat/chat-panel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,6 +14,7 @@ import {
   ApiError,
   type Brief,
   type BriefProgressEvent,
+  type BriefSummary,
   api,
   streamBriefGeneration,
 } from "@/lib/api-client";
@@ -21,6 +24,12 @@ type ProgressItem = {
   kind: BriefProgressEvent["kind"];
   message: string;
   ts: number;
+};
+
+type UpdateToast = {
+  brief_id: string;
+  version: number;
+  section: string;
 };
 
 const KIND_LABEL: Record<BriefProgressEvent["kind"], string> = {
@@ -39,31 +48,51 @@ const KIND_LABEL: Record<BriefProgressEvent["kind"], string> = {
 };
 
 export function BriefPanel({ projectId }: { projectId: string }) {
+  const [versions, setVersions] = useState<BriefSummary[]>([]);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [latest, setLatest] = useState<Brief | null>(null);
   const [progress, setProgress] = useState<ProgressItem[]>([]);
   const [running, setRunning] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [updateToast, setUpdateToast] = useState<UpdateToast | null>(null);
   const abortRef = useRef<AbortController | null>(null);
 
-  // Load latest brief if there is one already.
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
+  const loadVersions = useCallback(
+    async (selectId?: string) => {
       try {
         const list = await api.briefs.list(projectId);
-        if (cancelled || list.length === 0) return;
-        const latest = await api.briefs.get(list[0].id);
-        if (!cancelled) setLatest(latest);
+        setVersions(list);
+        if (list.length === 0) {
+          setSelectedId(null);
+          setLatest(null);
+          return;
+        }
+        const target = selectId ?? list[0].id;
+        setSelectedId(target);
+        const brief = await api.briefs.get(target);
+        setLatest(brief);
       } catch (e) {
         if (e instanceof ApiError && e.status !== 404) {
           setErrorMsg(e.message);
         }
       }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [projectId]);
+    },
+    [projectId],
+  );
+
+  useEffect(() => {
+    void loadVersions();
+  }, [loadVersions]);
+
+  async function onSelectVersion(briefId: string) {
+    setSelectedId(briefId);
+    try {
+      const brief = await api.briefs.get(briefId);
+      setLatest(brief);
+    } catch (e) {
+      if (e instanceof ApiError) setErrorMsg(e.message);
+    }
+  }
 
   async function onGenerate() {
     setRunning(true);
@@ -75,16 +104,14 @@ export function BriefPanel({ projectId }: { projectId: string }) {
     try {
       for await (const ev of streamBriefGeneration(projectId, abort.signal)) {
         const message = ev.message ?? KIND_LABEL[ev.kind] ?? ev.kind;
-        setProgress((prev) => [...prev, { kind: ev.kind, message, ts: Date.now() }]);
+        setProgress((prev) => [
+          ...prev,
+          { kind: ev.kind, message, ts: Date.now() },
+        ]);
         if (ev.brief_id) briefId = ev.brief_id;
-        if (ev.kind === "error") {
-          setErrorMsg(message);
-        }
+        if (ev.kind === "error") setErrorMsg(message);
       }
-      if (briefId) {
-        const fresh = await api.briefs.get(briefId);
-        setLatest(fresh);
-      }
+      if (briefId) await loadVersions(briefId);
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Stream failed";
       setErrorMsg(msg);
@@ -102,6 +129,15 @@ export function BriefPanel({ projectId }: { projectId: string }) {
     abortRef.current?.abort();
   }
 
+  // Called from <ChatPanel> when the agent updated a brief section.
+  const onChatBriefUpdated = useCallback(
+    (detail: UpdateToast) => {
+      setUpdateToast(detail);
+      void loadVersions(detail.brief_id);
+    },
+    [loadVersions],
+  );
+
   return (
     <section className="flex flex-col gap-4">
       <header className="flex items-end justify-between gap-3">
@@ -115,6 +151,13 @@ export function BriefPanel({ projectId }: { projectId: string }) {
           </p>
         </div>
         <div className="flex items-center gap-2">
+          {versions.length > 0 && (
+            <BriefVersionSelector
+              versions={versions}
+              selectedId={selectedId}
+              onSelect={onSelectVersion}
+            />
+          )}
           {running ? (
             <Button variant="outline" size="sm" onClick={onCancel}>
               Cancel
@@ -135,6 +178,32 @@ export function BriefPanel({ projectId }: { projectId: string }) {
         </div>
       </header>
 
+      {updateToast && (
+        <div className="flex items-center justify-between gap-3 rounded-md border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm text-emerald-800">
+          <span>
+            Brief updated to <strong>v{updateToast.version}</strong> —{" "}
+            <span className="font-mono">{updateToast.section}</span> revised.
+          </span>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => onSelectVersion(updateToast.brief_id)}
+              className="font-medium underline"
+            >
+              View
+            </button>
+            <button
+              type="button"
+              onClick={() => setUpdateToast(null)}
+              className="text-emerald-600"
+              aria-label="Dismiss"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
+
       {(running || progress.length > 0) && (
         <ProgressPanel items={progress} running={running} />
       )}
@@ -149,6 +218,7 @@ export function BriefPanel({ projectId }: { projectId: string }) {
         <>
           <BriefViewer brief={latest} />
           <DeckPanel briefId={latest.id} />
+          <ChatPanel projectId={projectId} onBriefUpdated={onChatBriefUpdated} />
         </>
       )}
 
@@ -156,7 +226,9 @@ export function BriefPanel({ projectId }: { projectId: string }) {
         <Card>
           <CardContent className="flex flex-col items-center gap-2 py-10 text-center text-muted-foreground">
             <FileText className="size-10 text-brand-stone" aria-hidden />
-            <p className="text-sm">No brief yet. Click Generate brief to run the agent.</p>
+            <p className="text-sm">
+              No brief yet. Click Generate brief to run the agent.
+            </p>
           </CardContent>
         </Card>
       )}
@@ -202,7 +274,8 @@ function ProgressPanel({
 
 function Icon({ kind }: { kind: BriefProgressEvent["kind"] }) {
   const cls = cn("size-3.5 shrink-0");
-  if (kind === "error") return <XCircle className={cn(cls, "text-red-500")} aria-hidden />;
+  if (kind === "error")
+    return <XCircle className={cn(cls, "text-red-500")} aria-hidden />;
   if (kind === "done" || kind === "persisted")
     return <CheckCircle2 className={cn(cls, "text-emerald-600")} aria-hidden />;
   return <Loader2 className={cn(cls, "text-brand-accent")} aria-hidden />;

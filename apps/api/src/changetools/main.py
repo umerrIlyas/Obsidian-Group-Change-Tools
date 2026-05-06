@@ -13,6 +13,7 @@ from changetools.api import exception_handlers
 from changetools.api.routers import (
     brand,
     briefs,
+    chat,
     decks,
     documents,
     health,
@@ -69,6 +70,7 @@ def create_app() -> FastAPI:
     app.include_router(brand.router)
     app.include_router(briefs.router)
     app.include_router(decks.router)
+    app.include_router(chat.router)
 
     return app
 

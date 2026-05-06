@@ -20,6 +20,7 @@ from changetools.domain.brief import (
     Stakeholder,
     Theme,
 )
+from changetools.domain.chat import ChatMessage, ChatRole, ChatSession, ToolCall
 from changetools.domain.chunk import Chunk, ChunkRef
 from changetools.domain.deck import Deck, DeckStatus
 from changetools.domain.document import (
@@ -39,6 +40,9 @@ __all__ = [
     "Brief",
     "BriefContent",
     "BriefStatus",
+    "ChatMessage",
+    "ChatRole",
+    "ChatSession",
     "Chunk",
     "ChunkRef",
     "Confidence",
@@ -61,4 +65,5 @@ __all__ = [
     "RiskSeverity",
     "Stakeholder",
     "Theme",
+    "ToolCall",
 ]
