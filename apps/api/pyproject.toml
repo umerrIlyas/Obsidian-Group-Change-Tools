@@ -114,7 +114,12 @@ indent-style = "space"
 # incrementally as the codebase stabilizes.
 python_version = "3.11"
 plugins = ["pydantic.mypy"]
-files = ["src"]
+# src-layout: tell mypy where the package root lives so internal imports
+# resolve consistently in both editable installs (local dev) and frozen
+# installs (CI). Without ``mypy_path`` + ``packages``, walking ``src/``
+# fails to discover sub-packages like ``repositories.models`` on CI.
+mypy_path = "src"
+packages = ["changetools"]
 exclude = ["tests/", "alembic/"]
 strict_optional = true
 check_untyped_defs = true
