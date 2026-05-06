@@ -64,7 +64,7 @@ typecheck:
 	cd apps/web && pnpm typecheck
 
 eval:
-	cd apps/api && uv run pytest tests/eval -v --tb=short
+	cd apps/api && uv run python -m changetools.eval
 	@echo "See eval_report.md for results."
 
 reembed:

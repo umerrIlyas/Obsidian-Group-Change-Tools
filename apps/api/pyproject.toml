@@ -101,6 +101,7 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = ["S101"]   # asserts allowed in tests
+"src/changetools/eval/__main__.py" = ["T201"]   # CLI prints intended
 
 [tool.ruff.format]
 quote-style = "double"
