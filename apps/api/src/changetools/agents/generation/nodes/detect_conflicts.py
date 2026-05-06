@@ -18,6 +18,7 @@ from changetools.agents.generation.schemas import DraftConflicts
 from changetools.agents.generation.state import GenerationState
 from changetools.agents.prompts.sections import CONFLICT_DETECTION, SYSTEM
 from changetools.infrastructure.llm.base import LLMProvider
+from changetools.infrastructure.llm.structured import invoke_structured
 
 # Document kinds we treat as "call notes" vs "data pack". Anything that is
 # clearly tabular is data pack; everything else collapses to call notes.
@@ -43,9 +44,7 @@ def make_detect_conflicts_node(llm: LLMProvider):
         notes_block = format_chunks_for_prompt(buckets["notes"][:12])
         data_block = format_chunks_for_prompt(buckets["data"][:12])
 
-        chat_model = llm.chat_model(temperature=0.1, max_tokens=1600).with_structured_output(
-            DraftConflicts
-        )
+        chat_model = llm.chat_model(temperature=0.1, max_tokens=1600)
 
         user_prompt = (
             f"{CONFLICT_DETECTION}\n\n"
@@ -55,10 +54,14 @@ def make_detect_conflicts_node(llm: LLMProvider):
         )
 
         try:
-            parsed: DraftConflicts = await chat_model.ainvoke(
-                [("system", SYSTEM), ("user", user_prompt)]
+            parsed = await invoke_structured(
+                chat_model,
+                schema=DraftConflicts,
+                system=SYSTEM,
+                user=user_prompt,
             )
         except Exception:
+            # Conflict detection is non-fatal — empty list is a legitimate result.
             return {"drafts": {**state.drafts, "_conflicts": []}}
 
         # Map UUID strings back to ChunkRefs and drop conflicts with no

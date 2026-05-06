@@ -27,6 +27,7 @@ from changetools.agents.prompts.sections import (
 )
 from changetools.core.errors import ProviderError
 from changetools.infrastructure.llm.base import LLMProvider
+from changetools.infrastructure.llm.structured import invoke_structured
 
 MAX_CONCURRENT_DRAFTS = 2
 
@@ -48,14 +49,13 @@ async def _draft_one(
         "Return JSON only — no prose, no markdown."
     )
 
-    structured = chat_model.with_structured_output(schema)
     async with semaphore:
         try:
-            result = await structured.ainvoke(
-                [
-                    ("system", SYSTEM),
-                    ("user", user_prompt),
-                ]
+            result = await invoke_structured(
+                chat_model,
+                schema=schema,
+                system=SYSTEM,
+                user=user_prompt,
             )
         except Exception as exc:
             return section, f"LLM call failed: {exc.__class__.__name__}: {exc}"

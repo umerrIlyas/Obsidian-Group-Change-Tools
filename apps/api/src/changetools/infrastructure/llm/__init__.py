@@ -12,10 +12,12 @@ from changetools.infrastructure.llm.base import (
     LLMProvider,
 )
 from changetools.infrastructure.llm.factory import build_llm_provider
+from changetools.infrastructure.llm.structured import invoke_structured
 
 __all__ = [
     "ChatMessage",
     "ChatResponse",
     "LLMProvider",
     "build_llm_provider",
+    "invoke_structured",
 ]
