@@ -10,7 +10,15 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from changetools import __version__
 from changetools.api import exception_handlers
-from changetools.api.routers import brand, documents, health, projects, retrieval
+from changetools.api.routers import (
+    brand,
+    briefs,
+    decks,
+    documents,
+    health,
+    projects,
+    retrieval,
+)
 from changetools.config import Settings, get_settings
 from changetools.core.logging import configure_logging, get_logger
 from changetools.core.middleware import RequestContextMiddleware
@@ -59,6 +67,8 @@ def create_app() -> FastAPI:
     app.include_router(documents.router)
     app.include_router(retrieval.router)
     app.include_router(brand.router)
+    app.include_router(briefs.router)
+    app.include_router(decks.router)
 
     return app
 

@@ -6,6 +6,8 @@ from changetools.api.schemas.brand import (
     PaletteSuggestionOut,
     UpdateBrandIn,
 )
+from changetools.api.schemas.briefs import BriefOut, BriefSummaryOut
+from changetools.api.schemas.decks import DeckOut
 from changetools.api.schemas.documents import (
     DocumentOut,
     DocumentSummaryOut,
@@ -17,7 +19,10 @@ from changetools.api.schemas.projects import CreateProjectIn, ProjectOut
 
 __all__ = [
     "BrandProfileOut",
+    "BriefOut",
+    "BriefSummaryOut",
     "CreateProjectIn",
+    "DeckOut",
     "DocumentOut",
     "DocumentSummaryOut",
     "PaletteSuggestion",

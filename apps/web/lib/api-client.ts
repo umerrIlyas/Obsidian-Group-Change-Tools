@@ -151,6 +151,153 @@ export type PaletteSuggestion = {
   population: number;
 };
 
+// --- Brief --------------------------------------------------------------
+
+export type Confidence = "high" | "medium" | "low";
+export type RiskSeverity = "low" | "medium" | "high" | "critical";
+export type Priority = "P0" | "P1" | "P2" | "P3";
+export type BriefStatus = "generating" | "ready" | "failed";
+export type StakeholderSentiment =
+  | "positive"
+  | "neutral"
+  | "concerned"
+  | "resistant";
+
+export type ChunkRef = {
+  chunk_id: string;
+  document_id: string;
+  document_filename: string | null;
+  snippet: string | null;
+};
+
+export type ExecutiveSummary = {
+  headline: string;
+  body: string;
+  evidence: ChunkRef[];
+  confidence: Confidence;
+};
+
+export type BriefTheme = {
+  title: string;
+  description: string;
+  evidence: ChunkRef[];
+  confidence: Confidence;
+};
+
+export type BriefRisk = {
+  risk_id: string;
+  title: string;
+  description: string;
+  severity: RiskSeverity;
+  likelihood: Confidence;
+  owner: string | null;
+  mitigation: string | null;
+  evidence: ChunkRef[];
+  confidence: Confidence;
+};
+
+export type BriefStakeholder = {
+  name: string;
+  role: string;
+  concern: string;
+  sentiment: StakeholderSentiment;
+  evidence: ChunkRef[];
+  confidence: Confidence;
+};
+
+export type BriefKPI = {
+  name: string;
+  current_value: string;
+  target_value: string | null;
+  gap: string | null;
+  trend: string | null;
+  evidence: ChunkRef[];
+  confidence: Confidence;
+};
+
+export type BriefRecommendation = {
+  title: string;
+  description: string;
+  priority: Priority;
+  addresses_risks: string[];
+  evidence: ChunkRef[];
+  confidence: Confidence;
+};
+
+export type BriefConflict = {
+  topic: string;
+  position_a: string;
+  position_b: string;
+  sources_a: ChunkRef[];
+  sources_b: ChunkRef[];
+  suggested_resolution: string | null;
+};
+
+export type BriefContent = {
+  executive_summary: ExecutiveSummary;
+  themes: BriefTheme[];
+  risks: BriefRisk[];
+  stakeholders: BriefStakeholder[];
+  kpis: BriefKPI[];
+  recommendations: BriefRecommendation[];
+  conflicts: BriefConflict[];
+};
+
+export type BriefSummary = {
+  id: string;
+  project_id: string;
+  version: number;
+  status: BriefStatus;
+  model_name: string | null;
+  provider: string | null;
+  error: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type Brief = BriefSummary & {
+  content: BriefContent;
+  metrics: Record<string, string | number>;
+};
+
+// --- Deck ---------------------------------------------------------------
+
+export type DeckStatus = "rendering" | "ready" | "failed";
+
+export type Deck = {
+  id: string;
+  brief_id: string;
+  project_id: string;
+  status: DeckStatus;
+  slide_count: number;
+  has_pdf: boolean;
+  pptx_url: string | null;
+  pdf_url: string | null;
+  theme_snapshot: Record<string, unknown>;
+  error: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type BriefProgressEvent = {
+  kind:
+    | "started"
+    | "start"
+    | "context_loaded"
+    | "evidence_retrieved"
+    | "section_drafted"
+    | "validation_failed"
+    | "validated"
+    | "citations_scored"
+    | "conflicts_detected"
+    | "persisted"
+    | "error"
+    | "done";
+  message?: string;
+  brief_id?: string;
+  detail?: Record<string, unknown>;
+};
+
 export const api = {
   health: () =>
     apiFetch<{
@@ -191,6 +338,22 @@ export const api = {
         method: "POST",
         body,
       }),
+  },
+
+  briefs: {
+    list: (projectId: string) =>
+      apiFetch<BriefSummary[]>(`/projects/${projectId}/briefs`),
+    get: (briefId: string) => apiFetch<Brief>(`/briefs/${briefId}`),
+  },
+
+  decks: {
+    generate: (briefId: string) =>
+      apiFetch<Deck>(`/briefs/${briefId}/deck`, { method: "POST" }),
+    latestForBrief: async (briefId: string): Promise<Deck | null> => {
+      const result = await apiFetch<Deck | null>(`/briefs/${briefId}/deck`);
+      return result;
+    },
+    get: (deckId: string) => apiFetch<Deck>(`/decks/${deckId}`),
   },
 
   brand: {
@@ -238,4 +401,67 @@ export const api = {
 export function backendUrl(path: string): string {
   const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
   return `${base.replace(/\/+$/, "")}/${path.replace(/^\/+/, "")}`;
+}
+
+/**
+ * Stream brief generation progress events from POST /projects/:id/brief.
+ *
+ * EventSource only supports GET, so we implement SSE manually with fetch +
+ * a streaming Response body. Yields each event as it arrives; resolves when
+ * the stream closes.
+ */
+export async function* streamBriefGeneration(
+  projectId: string,
+  signal?: AbortSignal,
+): AsyncGenerator<BriefProgressEvent, void, void> {
+  const url = `${BASE_URL.replace(/\/+$/, "")}/projects/${projectId}/brief`;
+  const response = await fetch(url, {
+    method: "POST",
+    headers: { Accept: "text/event-stream" },
+    signal,
+  });
+
+  if (!response.ok || !response.body) {
+    let body: ApiErrorBody | null = null;
+    try {
+      body = (await response.json()) as ApiErrorBody;
+    } catch {
+      // ignore
+    }
+    throw new ApiError(
+      response.status,
+      body?.error?.code ?? "http_error",
+      body?.error?.message ?? response.statusText,
+    );
+  }
+
+  const decoder = new TextDecoder();
+  const reader = response.body.getReader();
+  let buffer = "";
+
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+
+    // SSE events are separated by a blank line. Split & process each one.
+    let sepIdx;
+    while ((sepIdx = buffer.indexOf("\n\n")) !== -1) {
+      const rawEvent = buffer.slice(0, sepIdx);
+      buffer = buffer.slice(sepIdx + 2);
+
+      const dataLines = rawEvent
+        .split("\n")
+        .filter((l) => l.startsWith("data:"))
+        .map((l) => l.slice(5).trim());
+      if (dataLines.length === 0) continue;
+      const dataStr = dataLines.join("\n");
+      try {
+        const parsed = JSON.parse(dataStr) as BriefProgressEvent;
+        yield parsed;
+      } catch {
+        // skip malformed event
+      }
+    }
+  }
 }

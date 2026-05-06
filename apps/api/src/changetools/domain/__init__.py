@@ -5,7 +5,23 @@ convert between these and ORM rows at the persistence boundary.
 """
 
 from changetools.domain.brand import OBSIDIAN_PRESET, BrandProfile, HexColor, Neutrals
+from changetools.domain.brief import (
+    KPI,
+    Brief,
+    BriefContent,
+    BriefStatus,
+    Confidence,
+    Conflict,
+    ExecutiveSummary,
+    Priority,
+    Recommendation,
+    Risk,
+    RiskSeverity,
+    Stakeholder,
+    Theme,
+)
 from changetools.domain.chunk import Chunk, ChunkRef
+from changetools.domain.deck import Deck, DeckStatus
 from changetools.domain.document import (
     Document,
     DocumentKind,
@@ -17,17 +33,32 @@ from changetools.domain.document import (
 from changetools.domain.project import Project
 
 __all__ = [
+    "KPI",
     "OBSIDIAN_PRESET",
     "BrandProfile",
+    "Brief",
+    "BriefContent",
+    "BriefStatus",
     "Chunk",
     "ChunkRef",
+    "Confidence",
+    "Conflict",
+    "Deck",
+    "DeckStatus",
     "Document",
     "DocumentKind",
     "DocumentStatus",
+    "ExecutiveSummary",
     "HexColor",
     "Neutrals",
+    "Priority",
     "ProcessingJob",
     "ProcessingJobKind",
     "ProcessingStatus",
     "Project",
+    "Recommendation",
+    "Risk",
+    "RiskSeverity",
+    "Stakeholder",
+    "Theme",
 ]

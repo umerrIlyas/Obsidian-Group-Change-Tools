@@ -6,13 +6,17 @@ ORM rows never escape the repository layer.
 """
 
 from changetools.repositories.brand import BrandRepository
+from changetools.repositories.briefs import BriefRepository
 from changetools.repositories.chunks import ChunkRepository
+from changetools.repositories.decks import DeckRepository
 from changetools.repositories.documents import DocumentRepository, ProcessingJobRepository
 from changetools.repositories.projects import ProjectRepository
 
 __all__ = [
     "BrandRepository",
+    "BriefRepository",
     "ChunkRepository",
+    "DeckRepository",
     "DocumentRepository",
     "ProcessingJobRepository",
     "ProjectRepository",

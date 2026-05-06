@@ -27,6 +27,8 @@ from changetools.repositories.documents import (
 )
 from changetools.repositories.projects import ProjectRepository
 from changetools.services.brand_service import BrandService
+from changetools.services.brief_service import BriefService
+from changetools.services.deck_service import DeckService
 from changetools.services.document_service import DocumentService
 from changetools.services.ingestion_service import IngestionService
 from changetools.services.projects_service import ProjectsService
@@ -61,6 +63,23 @@ def get_ingestion_service() -> IngestionService:
         sessionmaker=get_sessionmaker(),
         storage=get_storage(),
         embeddings=get_embeddings(),
+    )
+
+
+@lru_cache(maxsize=1)
+def get_brief_service() -> BriefService:
+    return BriefService(
+        sessionmaker=get_sessionmaker(),
+        llm=get_llm(),
+        embeddings=get_embeddings(),
+    )
+
+
+@lru_cache(maxsize=1)
+def get_deck_service() -> DeckService:
+    return DeckService(
+        sessionmaker=get_sessionmaker(),
+        storage=get_storage(),
     )
 
 
