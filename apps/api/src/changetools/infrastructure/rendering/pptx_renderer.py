@@ -161,9 +161,7 @@ class BrandedDeckRenderer:
         self._add_fill_rect(slide, 0, 0, SLIDE_W, SLIDE_H, self.primary)
 
         # Accent stripe across the top quarter.
-        self._add_fill_rect(
-            slide, 0, Inches(2.4), Inches(0.6), Inches(0.12), self.accent
-        )
+        self._add_fill_rect(slide, 0, Inches(2.4), Inches(0.6), Inches(0.12), self.accent)
 
         # Logo top-left, if available, on title slide.
         self._add_logo(slide, x=Inches(0.6), y=Inches(0.55), height=Inches(0.7))
@@ -208,9 +206,7 @@ class BrandedDeckRenderer:
             color=self.fog,
         )
 
-    def _executive_summary_slide(
-        self, prs: Presentation, summary: ExecutiveSummary
-    ) -> None:
+    def _executive_summary_slide(self, prs: Presentation, summary: ExecutiveSummary) -> None:
         slide = self._content_slide(prs, "Executive summary")
         self._add_text(
             slide,
@@ -293,9 +289,7 @@ class BrandedDeckRenderer:
         self._add_table(slide, rows, col_widths=(0.10, 0.55, 0.15, 0.20))
         self._add_sources_footer(slide, _evidence_union(risks))
 
-    def _stakeholders_slide(
-        self, prs: Presentation, stakeholders: Sequence[Stakeholder]
-    ) -> None:
+    def _stakeholders_slide(self, prs: Presentation, stakeholders: Sequence[Stakeholder]) -> None:
         slide = self._content_slide(prs, "Stakeholders")
         rows = [["Name", "Role", "Sentiment", "Concern"]]
         for s in stakeholders[:7]:
@@ -303,9 +297,7 @@ class BrandedDeckRenderer:
         self._add_table(slide, rows, col_widths=(0.18, 0.18, 0.14, 0.50))
         self._add_sources_footer(slide, _evidence_union(stakeholders))
 
-    def _recommendations_slide(
-        self, prs: Presentation, recs: Sequence[Recommendation]
-    ) -> None:
+    def _recommendations_slide(self, prs: Presentation, recs: Sequence[Recommendation]) -> None:
         slide = self._content_slide(prs, "Recommendations")
         body_y = TOP_MARGIN_BODY
         for _, rec in enumerate(recs[:6]):
@@ -379,9 +371,7 @@ class BrandedDeckRenderer:
         # Header band.
         self._add_fill_rect(slide, 0, 0, SLIDE_W, HEADER_H, self.primary)
         # Accent underline.
-        self._add_fill_rect(
-            slide, LEFT_MARGIN, HEADER_H, Inches(1.0), Inches(0.06), self.accent
-        )
+        self._add_fill_rect(slide, LEFT_MARGIN, HEADER_H, Inches(1.0), Inches(0.06), self.accent)
         # Title.
         self._add_text(
             slide,
@@ -404,9 +394,7 @@ class BrandedDeckRenderer:
         )
         return slide
 
-    def _add_sources_footer(
-        self, slide, evidence: Iterable[ChunkRef]
-    ) -> None:
+    def _add_sources_footer(self, slide, evidence: Iterable[ChunkRef]) -> None:
         unique = []
         seen: set[str] = set()
         for ev in evidence:

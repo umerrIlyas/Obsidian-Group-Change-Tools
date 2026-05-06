@@ -186,7 +186,7 @@ def case_stakeholder_concerns(brief: Brief, _: EvalContext) -> EvalResult:
             detail=f"names={names!r}, roles={roles!r}",
         ),
         Assertion(
-            description='Elena Brooks or a comms/messaging stakeholder present',
+            description="Elena Brooks or a comms/messaging stakeholder present",
             passed=elena_or_comms,
             detail=f"names={names!r}, roles={roles!r}",
         ),

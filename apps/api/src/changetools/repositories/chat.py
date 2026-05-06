@@ -39,9 +39,7 @@ class ChatRepository:
         )
         return [ChatSession.model_validate(r) for r in result.scalars().all()]
 
-    async def latest_session_for_project(
-        self, project_id: uuid.UUID
-    ) -> ChatSession | None:
+    async def latest_session_for_project(self, project_id: uuid.UUID) -> ChatSession | None:
         result = await self._session.execute(
             select(ChatSessionORM)
             .where(ChatSessionORM.project_id == project_id)

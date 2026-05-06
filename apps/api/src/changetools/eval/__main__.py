@@ -28,9 +28,7 @@ from changetools.eval.runner import run_eval
 from changetools.repositories.models import ProjectORM
 
 # apps/api/src/changetools/eval/__main__.py → repo root is six levels up.
-DEFAULT_REPORT_PATH = (
-    Path(__file__).resolve().parents[4].parent / "eval_report.md"
-)
+DEFAULT_REPORT_PATH = Path(__file__).resolve().parents[4].parent / "eval_report.md"
 
 
 async def _default_project_id() -> uuid.UUID | None:
@@ -44,9 +42,7 @@ async def _default_project_id() -> uuid.UUID | None:
 
 
 async def _amain(args: argparse.Namespace) -> int:
-    project_id = (
-        uuid.UUID(args.project_id) if args.project_id else await _default_project_id()
-    )
+    project_id = uuid.UUID(args.project_id) if args.project_id else await _default_project_id()
     if project_id is None:
         print("No projects found in database. Create a project first.", file=sys.stderr)
         return 2

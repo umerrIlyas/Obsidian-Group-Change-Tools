@@ -43,13 +43,9 @@ def _make_chat_model(
     if isinstance(json_mode_content, Exception):
         bound_runnable.ainvoke = AsyncMock(side_effect=json_mode_content)
     elif json_mode_content is not None:
-        bound_runnable.ainvoke = AsyncMock(
-            return_value=AIMessage(content=json_mode_content)
-        )
+        bound_runnable.ainvoke = AsyncMock(return_value=AIMessage(content=json_mode_content))
     else:
-        bound_runnable.ainvoke = AsyncMock(
-            return_value=AIMessage(content="(unused)")
-        )
+        bound_runnable.ainvoke = AsyncMock(return_value=AIMessage(content="(unused)"))
     chat.bind = MagicMock(return_value=bound_runnable)
 
     return chat

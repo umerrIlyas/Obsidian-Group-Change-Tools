@@ -27,8 +27,7 @@ def render_markdown(
     lines.append("# ChangeTools — eval report")
     lines.append("")
     lines.append(
-        f"_Generated {datetime.now(UTC).strftime('%Y-%m-%d %H:%M UTC')} "
-        f"in {elapsed_seconds:.1f}s_"
+        f"_Generated {datetime.now(UTC).strftime('%Y-%m-%d %H:%M UTC')} in {elapsed_seconds:.1f}s_"
     )
     lines.append("")
     status_badge = "✅ PASS" if overall_pass else f"❌ FAIL ({fail_count} assertions)"

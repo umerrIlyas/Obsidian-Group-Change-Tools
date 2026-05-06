@@ -26,17 +26,13 @@ def _hit(text: str, kind: str = "docx", filename: str = "notes.docx") -> Retriev
         score=0.9,
         created_at=datetime.now(UTC),
     )
-    return RetrievalHit(
-        chunk=chunk, document_filename=filename, document_kind=kind, score=0.9
-    )
+    return RetrievalHit(chunk=chunk, document_filename=filename, document_kind=kind, score=0.9)
 
 
 def test_resolve_chunk_refs_drops_unknown_uuids():
     hit = _hit("Sana Patel said the rollout was rushed.")
     pool = hits_index([hit])
-    refs = resolve_chunk_refs(
-        [str(hit.chunk.id), str(uuid.uuid4()), "not-a-uuid"], pool
-    )
+    refs = resolve_chunk_refs([str(hit.chunk.id), str(uuid.uuid4()), "not-a-uuid"], pool)
     assert len(refs) == 1
     assert refs[0].chunk_id == hit.chunk.id
     assert refs[0].document_filename == "notes.docx"

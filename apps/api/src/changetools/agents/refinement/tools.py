@@ -130,9 +130,7 @@ def build_tools(
     async def _retrieve_evidence(query: str, top_k: int = 6) -> str:
         async with sm() as session:
             service = RetrievalService(session=session, embeddings=embeddings)
-            hits = await service.retrieve(
-                project_id=project_id, query=query, top_k=top_k
-            )
+            hits = await service.retrieve(project_id=project_id, query=query, top_k=top_k)
         if not hits:
             return "No matching chunks. Try a different query."
         rendered = []
@@ -144,9 +142,7 @@ def build_tools(
                     "document": h.document_filename,
                     "score": round(h.score, 3),
                     "snippet": (
-                        h.chunk.text[:400] + "…"
-                        if len(h.chunk.text) > 400
-                        else h.chunk.text
+                        h.chunk.text[:400] + "…" if len(h.chunk.text) > 400 else h.chunk.text
                     ),
                 }
             )
@@ -167,10 +163,7 @@ def build_tools(
         if hasattr(value, "model_dump"):
             value = value.model_dump(mode="json")
         elif isinstance(value, list):
-            value = [
-                v.model_dump(mode="json") if hasattr(v, "model_dump") else v
-                for v in value
-            ]
+            value = [v.model_dump(mode="json") if hasattr(v, "model_dump") else v for v in value]
         return json.dumps(value, indent=2)
 
     async def _update_brief_section(section: str, new_value_json: str) -> str:
@@ -299,10 +292,7 @@ def build_tools(
             )
         if section == "stakeholders":
             return json.dumps(
-                [
-                    {"name": s.name, "role": s.role, "sentiment": s.sentiment}
-                    for s in items
-                ],
+                [{"name": s.name, "role": s.role, "sentiment": s.sentiment} for s in items],
                 indent=2,
             )
         return "[]"

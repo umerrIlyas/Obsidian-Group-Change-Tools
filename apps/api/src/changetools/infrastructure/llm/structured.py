@@ -90,9 +90,7 @@ async def invoke_structured(
         json_model = chat_model
 
     try:
-        response = await json_model.ainvoke(
-            [("system", system), ("user", augmented_user)]
-        )
+        response = await json_model.ainvoke([("system", system), ("user", augmented_user)])
     except Exception as exc:
         log.error(
             "json_mode_fallback_failed",

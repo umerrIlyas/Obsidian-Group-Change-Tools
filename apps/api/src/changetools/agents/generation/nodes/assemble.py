@@ -28,9 +28,7 @@ async def assemble_node(state: GenerationState) -> dict:
         executive_summary=exec_summary,
         themes=[Theme.model_validate(t) for t in grounded.get("themes") or []],
         risks=[Risk.model_validate(r) for r in grounded.get("risks") or []],
-        stakeholders=[
-            Stakeholder.model_validate(s) for s in grounded.get("stakeholders") or []
-        ],
+        stakeholders=[Stakeholder.model_validate(s) for s in grounded.get("stakeholders") or []],
         kpis=[KPI.model_validate(k) for k in grounded.get("kpis") or []],
         recommendations=[
             Recommendation.model_validate(r) for r in grounded.get("recommendations") or []

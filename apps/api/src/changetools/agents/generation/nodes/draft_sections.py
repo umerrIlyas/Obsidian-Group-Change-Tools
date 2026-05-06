@@ -67,9 +67,7 @@ def make_draft_sections_node(llm: LLMProvider):
         # Skip sections that are already drafted AND not in the failure set —
         # this lets the validation retry loop only re-draft what failed.
         failed = set(state.validation_errors.keys())
-        sections_to_draft = [
-            s for s in SECTION_NAMES if s not in state.drafts or s in failed
-        ]
+        sections_to_draft = [s for s in SECTION_NAMES if s not in state.drafts or s in failed]
 
         chat_model = llm.chat_model(temperature=0.2, max_tokens=2400)
         semaphore = asyncio.Semaphore(MAX_CONCURRENT_DRAFTS)

@@ -131,9 +131,7 @@ class ChatService:
         consumed_brief_updates = 0
 
         try:
-            async for event in agent.astream_events(
-                {"messages": lc_history}, version="v2"
-            ):
+            async for event in agent.astream_events({"messages": lc_history}, version="v2"):
                 etype = event["event"]
                 data = event.get("data", {})
 
@@ -175,15 +173,11 @@ class ChatService:
 
                 # Drain any brief-updated callbacks that fired since the last loop.
                 while consumed_brief_updates < len(brief_updates):
-                    yield StreamEvent(
-                        "brief_updated", brief_updates[consumed_brief_updates]
-                    )
+                    yield StreamEvent("brief_updated", brief_updates[consumed_brief_updates])
                     consumed_brief_updates += 1
         except Exception as exc:
             log.exception("chat.stream_failed", session_id=str(session_id))
-            await self._persist_assistant(
-                session_id, content=f"(error) {exc}", tool_calls=[]
-            )
+            await self._persist_assistant(session_id, content=f"(error) {exc}", tool_calls=[])
             yield StreamEvent("error", {"message": str(exc)})
             return
 

@@ -46,9 +46,7 @@ def build_generation_graph(
     graph = StateGraph(GenerationState)
 
     graph.add_node("load_context", make_load_context_node(sessionmaker))
-    graph.add_node(
-        "retrieve_evidence", make_retrieve_evidence_node(sessionmaker, embeddings)
-    )
+    graph.add_node("retrieve_evidence", make_retrieve_evidence_node(sessionmaker, embeddings))
     graph.add_node("draft_sections", make_draft_sections_node(llm))
     graph.add_node("validate", validate_node)
     graph.add_node("cite_evidence", cite_evidence_node)
