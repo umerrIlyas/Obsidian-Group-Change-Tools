@@ -19,8 +19,8 @@ from changetools.infrastructure.parsing.base import ParsedBlock, ParsedDocument
 
 
 class DocxParser:
-    name = "docx"
-    supported_extensions = (".docx",)
+    name: str = "docx"
+    supported_extensions: tuple[str, ...] = (".docx",)
 
     def parse(self, stream: BinaryIO, *, filename: str) -> ParsedDocument:
         document = DocxDocument(stream)

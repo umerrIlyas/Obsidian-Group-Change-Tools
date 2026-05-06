@@ -19,7 +19,7 @@ import json
 import uuid
 from typing import Any
 
-from langchain_core.tools import StructuredTool
+from langchain_core.tools import BaseTool, StructuredTool
 from pydantic import BaseModel, Field
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
@@ -117,7 +117,7 @@ def build_tools(
     embeddings: EmbeddingProvider,
     deck_service: DeckService,
     on_brief_updated: Any | None = None,
-) -> list[StructuredTool]:
+) -> list[BaseTool]:
     """Return the tool set bound to ``project_id``.
 
     ``on_brief_updated`` is an optional callback (sync or async-callable) that
@@ -297,7 +297,7 @@ def build_tools(
             )
         return "[]"
 
-    return [
+    tools: list[BaseTool] = [
         StructuredTool.from_function(
             coroutine=_retrieve_evidence,
             name="retrieve_evidence",
@@ -357,3 +357,4 @@ def build_tools(
             args_schema=NoArgs,
         ),
     ]
+    return tools

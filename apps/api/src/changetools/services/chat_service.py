@@ -21,7 +21,7 @@ from collections.abc import AsyncIterator
 from dataclasses import dataclass
 from typing import Any
 
-from langchain_core.messages import AIMessage, HumanMessage, ToolMessage
+from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, ToolMessage
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
 from changetools.agents.refinement.graph import build_refinement_agent
@@ -254,7 +254,7 @@ class ChatService:
 # ---------------------------------------------------------------------------
 
 
-def _to_langchain_messages(history: list[ChatMessage]):
+def _to_langchain_messages(history: list[ChatMessage]) -> list[BaseMessage]:
     """Replay persisted messages into the LangChain message history format.
 
     For simplicity we replay user + assistant turns only — the agent will
@@ -262,7 +262,7 @@ def _to_langchain_messages(history: list[ChatMessage]):
     verbatim would require matching their tool_call_ids back to the assistant
     AIMessage that referenced them, which langgraph rebuilds itself.
     """
-    out = []
+    out: list[BaseMessage] = []
     for m in history:
         if m.role == "user":
             out.append(HumanMessage(content=m.content))

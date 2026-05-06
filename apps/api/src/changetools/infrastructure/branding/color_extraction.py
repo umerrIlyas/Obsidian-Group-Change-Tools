@@ -36,23 +36,30 @@ def extract_dominant_colors(
 ) -> list[DominantColor]:
     if not image_bytes:
         return []
-    image = Image.open(io.BytesIO(image_bytes))
+    image: Image.Image = Image.open(io.BytesIO(image_bytes))
     image = _flatten_alpha(image)
     image.thumbnail((thumbnail_size, thumbnail_size))
 
     quantised = image.quantize(colors=max_colors, method=Image.Quantize.MEDIANCUT)
-    palette = quantised.getpalette() or []
+    palette: list[int] = quantised.getpalette() or []
     counts = quantised.getcolors() or []
 
     results: list[DominantColor] = []
-    for population, palette_index in counts:
+    for entry in counts:
+        # ``getcolors`` returns ``list[tuple[count, palette_index]]`` for a
+        # palette image, but its declared return type is wider; narrow here.
+        if not isinstance(entry, tuple) or len(entry) != 2:
+            continue
+        population, palette_index = entry
+        if not isinstance(palette_index, int):
+            continue
         r = palette[palette_index * 3]
         g = palette[palette_index * 3 + 1]
         b = palette[palette_index * 3 + 2]
         results.append(
             DominantColor(
                 hex=f"#{r:02X}{g:02X}{b:02X}",
-                population=population,
+                population=int(population),
             )
         )
     results.sort(key=lambda c: c.population, reverse=True)

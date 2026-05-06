@@ -106,7 +106,9 @@ class IngestionService:
         async with self._sessionmaker() as session:
             chunk_repo = ChunkRepository(session)
             doc_repo = DocumentRepository(session)
-            payload = [(s.text, s.meta, v) for s, v in zip(seeds, vectors, strict=True)]
+            payload: list[tuple[str, dict[str, object], list[float] | None]] = [
+                (s.text, s.meta, v) for s, v in zip(seeds, vectors, strict=True)
+            ]
             inserted = await chunk_repo.bulk_insert(document_id=document_id, chunks=payload)
             await doc_repo.update_status(
                 document_id,

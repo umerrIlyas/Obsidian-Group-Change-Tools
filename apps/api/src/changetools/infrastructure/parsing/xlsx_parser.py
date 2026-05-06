@@ -18,8 +18,8 @@ from changetools.infrastructure.parsing.base import ParsedBlock, ParsedDocument
 
 
 class XlsxParser:
-    name = "xlsx"
-    supported_extensions = (".xlsx",)
+    name: str = "xlsx"
+    supported_extensions: tuple[str, ...] = (".xlsx",)
 
     def parse(self, stream: BinaryIO, *, filename: str) -> ParsedDocument:
         wb = load_workbook(stream, data_only=True, read_only=False)

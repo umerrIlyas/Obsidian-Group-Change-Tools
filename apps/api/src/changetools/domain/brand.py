@@ -6,7 +6,7 @@ from __future__ import annotations
 import re
 import uuid
 from datetime import datetime
-from typing import Annotated
+from typing import Annotated, TypedDict
 
 from pydantic import BaseModel, ConfigDict, Field, StringConstraints
 
@@ -16,7 +16,17 @@ HexColor = Annotated[
     StringConstraints(pattern=r"^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$"),
 ]
 
-OBSIDIAN_PRESET = {
+
+class _ObsidianPreset(TypedDict):
+    primary_color: str
+    secondary_color: str
+    accent_color: str
+    neutrals: dict[str, str]
+    font_heading: str
+    font_body: str
+
+
+OBSIDIAN_PRESET: _ObsidianPreset = {
     "primary_color": "#0D171E",
     "secondary_color": "#2C343C",
     "accent_color": "#3A8C91",

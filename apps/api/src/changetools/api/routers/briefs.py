@@ -9,7 +9,8 @@ from __future__ import annotations
 import json
 import uuid
 from collections.abc import AsyncIterator
-from dataclasses import asdict
+from dataclasses import asdict, is_dataclass
+from typing import Any
 
 from fastapi import APIRouter, Depends, status
 from fastapi.responses import StreamingResponse
@@ -88,8 +89,12 @@ async def get_brief(
     return BriefOut.model_validate(brief)
 
 
-def _sse(payload: dict | object) -> bytes:
+def _sse(payload: dict[str, Any] | object) -> bytes:
     """Serialize a payload as a single SSE ``data:`` event."""
-    if not isinstance(payload, dict):
-        payload = asdict(payload)
-    return f"data: {json.dumps(payload, default=str)}\n\n".encode()
+    if isinstance(payload, dict):
+        body = payload
+    elif is_dataclass(payload) and not isinstance(payload, type):
+        body = asdict(payload)
+    else:
+        body = {"data": str(payload)}
+    return f"data: {json.dumps(body, default=str)}\n\n".encode()
