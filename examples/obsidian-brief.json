@@ -1,0 +1,338 @@
+{
+  "id": "44d3643d-afd5-41e5-9a5f-2b9f56fe9fdb",
+  "project_id": "e23950df-bc4f-4f41-9261-bcffa752f26e",
+  "version": 5,
+  "status": "ready",
+  "model_name": "llama-3.3-70b-versatile",
+  "provider": "groq",
+  "metrics": {
+    "items_total": 17,
+    "citation_rate": 1.0,
+    "items_grounded": 17,
+    "evidence_chunks": 42
+  },
+  "content": {
+    "kpis": [
+      {
+        "gap": null,
+        "name": "Digital Workflow Adoption",
+        "trend": null,
+        "evidence": [
+          {
+            "snippet": "# 6. Metrics discussed\n\nDigital workflow adoption target: 80% within 6 months.\n\nCustomer support handling time reduction target: 20%.\n\nEmployee sentiment target: above 70% positive/neutral sentiment.\n\nManual reporting effort reduction target: 30%.\n\nWeekly reporting completion target: 100% of regiona\u2026",
+            "chunk_id": "250dd032-843b-4091-a72d-07242158a0b1",
+            "document_id": "b59d2416-8a6a-426d-8b2c-f231a0b400b7",
+            "document_filename": "Obsidian_Group_AI_Call_Notes.docx"
+          },
+          {
+            "snippet": "[KPI Tracker \u00b7 KPITracker] Week Starting: 2026-04-20 | Region: North | Digital Workflow Adoption %: 0.7 | Training Completion %: 0.79 | Employee Sentiment %: 0.71 | Avg Support Handling Time (mins): 11.6 | Weekly Report Submitted: Yes | Manual Reporting Hours: 13.6 | Data Quality Flag: OK",
+            "chunk_id": "7557c4b1-9f57-48d3-8919-877af4485487",
+            "document_id": "3a0c851c-f1be-4220-ae42-726eea8f4b5a",
+            "document_filename": "Obsidian_Group_Change_Data_Pack.xlsx"
+          }
+        ],
+        "confidence": "medium",
+        "target_value": "80%",
+        "current_value": "0.88"
+      },
+      {
+        "gap": null,
+        "name": "Customer Support Handling Time Reduction",
+        "trend": null,
+        "evidence": [
+          {
+            "snippet": "# 6. Metrics discussed\n\nDigital workflow adoption target: 80% within 6 months.\n\nCustomer support handling time reduction target: 20%.\n\nEmployee sentiment target: above 70% positive/neutral sentiment.\n\nManual reporting effort reduction target: 30%.\n\nWeekly reporting completion target: 100% of regiona\u2026",
+            "chunk_id": "250dd032-843b-4091-a72d-07242158a0b1",
+            "document_id": "b59d2416-8a6a-426d-8b2c-f231a0b400b7",
+            "document_filename": "Obsidian_Group_AI_Call_Notes.docx"
+          },
+          {
+            "snippet": "[KPI Tracker \u00b7 KPITracker] Week Starting: 2026-04-20 | Region: North | Digital Workflow Adoption %: 0.7 | Training Completion %: 0.79 | Employee Sentiment %: 0.71 | Avg Support Handling Time (mins): 11.6 | Weekly Report Submitted: Yes | Manual Reporting Hours: 13.6 | Data Quality Flag: OK",
+            "chunk_id": "7557c4b1-9f57-48d3-8919-877af4485487",
+            "document_id": "3a0c851c-f1be-4220-ae42-726eea8f4b5a",
+            "document_filename": "Obsidian_Group_Change_Data_Pack.xlsx"
+          }
+        ],
+        "confidence": "medium",
+        "target_value": "20%",
+        "current_value": "9.4"
+      },
+      {
+        "gap": null,
+        "name": "Employee Sentiment",
+        "trend": null,
+        "evidence": [
+          {
+            "snippet": "# 6. Metrics discussed\n\nDigital workflow adoption target: 80% within 6 months.\n\nCustomer support handling time reduction target: 20%.\n\nEmployee sentiment target: above 70% positive/neutral sentiment.\n\nManual reporting effort reduction target: 30%.\n\nWeekly reporting completion target: 100% of regiona\u2026",
+            "chunk_id": "250dd032-843b-4091-a72d-07242158a0b1",
+            "document_id": "b59d2416-8a6a-426d-8b2c-f231a0b400b7",
+            "document_filename": "Obsidian_Group_AI_Call_Notes.docx"
+          },
+          {
+            "snippet": "[KPI Tracker \u00b7 KPITracker] Week Starting: 2026-04-20 | Region: North | Digital Workflow Adoption %: 0.7 | Training Completion %: 0.79 | Employee Sentiment %: 0.71 | Avg Support Handling Time (mins): 11.6 | Weekly Report Submitted: Yes | Manual Reporting Hours: 13.6 | Data Quality Flag: OK",
+            "chunk_id": "7557c4b1-9f57-48d3-8919-877af4485487",
+            "document_id": "3a0c851c-f1be-4220-ae42-726eea8f4b5a",
+            "document_filename": "Obsidian_Group_Change_Data_Pack.xlsx"
+          }
+        ],
+        "confidence": "medium",
+        "target_value": "above 70%",
+        "current_value": "0.83"
+      },
+      {
+        "gap": null,
+        "name": "Manual Reporting Effort Reduction",
+        "trend": null,
+        "evidence": [
+          {
+            "snippet": "# 6. Metrics discussed\n\nDigital workflow adoption target: 80% within 6 months.\n\nCustomer support handling time reduction target: 20%.\n\nEmployee sentiment target: above 70% positive/neutral sentiment.\n\nManual reporting effort reduction target: 30%.\n\nWeekly reporting completion target: 100% of regiona\u2026",
+            "chunk_id": "250dd032-843b-4091-a72d-07242158a0b1",
+            "document_id": "b59d2416-8a6a-426d-8b2c-f231a0b400b7",
+            "document_filename": "Obsidian_Group_AI_Call_Notes.docx"
+          },
+          {
+            "snippet": "[KPI Tracker \u00b7 KPITracker] Week Starting: 2026-04-20 | Region: North | Digital Workflow Adoption %: 0.7 | Training Completion %: 0.79 | Employee Sentiment %: 0.71 | Avg Support Handling Time (mins): 11.6 | Weekly Report Submitted: Yes | Manual Reporting Hours: 13.6 | Data Quality Flag: OK",
+            "chunk_id": "7557c4b1-9f57-48d3-8919-877af4485487",
+            "document_id": "3a0c851c-f1be-4220-ae42-726eea8f4b5a",
+            "document_filename": "Obsidian_Group_Change_Data_Pack.xlsx"
+          }
+        ],
+        "confidence": "medium",
+        "target_value": "30%",
+        "current_value": "7"
+      },
+      {
+        "gap": null,
+        "name": "Weekly Reporting Completion",
+        "trend": null,
+        "evidence": [
+          {
+            "snippet": "# 6. Metrics discussed\n\nDigital workflow adoption target: 80% within 6 months.\n\nCustomer support handling time reduction target: 20%.\n\nEmployee sentiment target: above 70% positive/neutral sentiment.\n\nManual reporting effort reduction target: 30%.\n\nWeekly reporting completion target: 100% of regiona\u2026",
+            "chunk_id": "250dd032-843b-4091-a72d-07242158a0b1",
+            "document_id": "b59d2416-8a6a-426d-8b2c-f231a0b400b7",
+            "document_filename": "Obsidian_Group_AI_Call_Notes.docx"
+          },
+          {
+            "snippet": "[KPI Tracker \u00b7 KPITracker] Week Starting: 2026-04-20 | Region: North | Digital Workflow Adoption %: 0.7 | Training Completion %: 0.79 | Employee Sentiment %: 0.71 | Avg Support Handling Time (mins): 11.6 | Weekly Report Submitted: Yes | Manual Reporting Hours: 13.6 | Data Quality Flag: OK",
+            "chunk_id": "7557c4b1-9f57-48d3-8919-877af4485487",
+            "document_id": "3a0c851c-f1be-4220-ae42-726eea8f4b5a",
+            "document_filename": "Obsidian_Group_Change_Data_Pack.xlsx"
+          }
+        ],
+        "confidence": "medium",
+        "target_value": "100%",
+        "current_value": "Yes"
+      },
+      {
+        "gap": null,
+        "name": "Training Completion",
+        "trend": null,
+        "evidence": [
+          {
+            "snippet": "# 6. Metrics discussed\n\nDigital workflow adoption target: 80% within 6 months.\n\nCustomer support handling time reduction target: 20%.\n\nEmployee sentiment target: above 70% positive/neutral sentiment.\n\nManual reporting effort reduction target: 30%.\n\nWeekly reporting completion target: 100% of regiona\u2026",
+            "chunk_id": "250dd032-843b-4091-a72d-07242158a0b1",
+            "document_id": "b59d2416-8a6a-426d-8b2c-f231a0b400b7",
+            "document_filename": "Obsidian_Group_AI_Call_Notes.docx"
+          },
+          {
+            "snippet": "[KPI Tracker \u00b7 KPITracker] Week Starting: 2026-04-20 | Region: North | Digital Workflow Adoption %: 0.7 | Training Completion %: 0.79 | Employee Sentiment %: 0.71 | Avg Support Handling Time (mins): 11.6 | Weekly Report Submitted: Yes | Manual Reporting Hours: 13.6 | Data Quality Flag: OK",
+            "chunk_id": "7557c4b1-9f57-48d3-8919-877af4485487",
+            "document_id": "3a0c851c-f1be-4220-ae42-726eea8f4b5a",
+            "document_filename": "Obsidian_Group_Change_Data_Pack.xlsx"
+          }
+        ],
+        "confidence": "medium",
+        "target_value": "above 90%",
+        "current_value": "0.96"
+      }
+    ],
+    "risks": [],
+    "themes": [
+      {
+        "title": "Adoption Risk",
+        "evidence": [
+          {
+            "snippet": "# 2. Key themes captured by the AI note taker\n\nTheme: Adoption risk | Notes: Early pilot data suggests lower adoption where middle managers are not actively reinforcing the workflow.",
+            "chunk_id": "88ff9013-219f-4010-8e5d-e9e8277e3d15",
+            "document_id": "b59d2416-8a6a-426d-8b2c-f231a0b400b7",
+            "document_filename": "Obsidian_Group_AI_Call_Notes.docx"
+          }
+        ],
+        "confidence": "medium",
+        "description": "Early pilot data suggests lower adoption where middle managers are not actively reinforcing the workflow, as noted in chunk 88ff9013-219f-4010-8e5d-e9e8277e3d15"
+      },
+      {
+        "title": "Data Quality Challenge",
+        "evidence": [
+          {
+            "snippet": "# 2. Key themes captured by the AI note taker\n\nTheme: Data quality challenge | Notes: Weekly reporting is currently manual and inconsistent; teams use different templates and definitions.",
+            "chunk_id": "049e8e8a-4a1b-4306-a8ab-6473cb45ec87",
+            "document_id": "b59d2416-8a6a-426d-8b2c-f231a0b400b7",
+            "document_filename": "Obsidian_Group_AI_Call_Notes.docx"
+          }
+        ],
+        "confidence": "medium",
+        "description": "Weekly reporting is currently manual and inconsistent, with teams using different templates and definitions, as noted in chunk 049e8e8a-4a1b-4306-a8ab-6473cb45ec87"
+      },
+      {
+        "title": "Regional Variance",
+        "evidence": [
+          {
+            "snippet": "[Stakeholders \u00b7 StakeholderMap] Stakeholder Group: Regional managers | Scope: Regional | Influence: High | Current Sentiment: Mixed | Primary Concern: Control over local rollout plans | Recommended Message: Regional plans will keep local nuance while using one version of the programme story | Prefer\u2026",
+            "chunk_id": "4da71a7e-b807-4acd-bb06-12e125cb30ef",
+            "document_id": "3a0c851c-f1be-4220-ae42-726eea8f4b5a",
+            "document_filename": "Obsidian_Group_Change_Data_Pack.xlsx"
+          }
+        ],
+        "confidence": "medium",
+        "description": "Regional managers have mixed sentiment and are concerned about control over local rollout plans, as noted in chunk 4da71a7e-b807-4acd-bb06-12e125cb30ef"
+      },
+      {
+        "title": "Messaging Drift",
+        "evidence": [
+          {
+            "snippet": "# 5. Risks and concerns raised\n\nID: R-03 | Risk: Inconsistent regional messaging | Severity: Medium | AI-captured rationale: Different decks and informal explanations are creating confusion and message drift.",
+            "chunk_id": "3e322362-8d82-483b-835e-49649eb0b34e",
+            "document_id": "b59d2416-8a6a-426d-8b2c-f231a0b400b7",
+            "document_filename": "Obsidian_Group_AI_Call_Notes.docx"
+          }
+        ],
+        "confidence": "medium",
+        "description": "Different decks and informal explanations are creating confusion and message drift, as noted in chunk 3e322362-8d82-483b-835e-49649eb0b34e"
+      },
+      {
+        "title": "Operational Visibility",
+        "evidence": [
+          {
+            "snippet": "# 2. Key themes captured by the AI note taker\n\nTheme: Operational visibility | Notes: COO wants weekly adoption reporting by region, with a clear view of blockers, training completion, and support handling time.",
+            "chunk_id": "6a59282d-634b-4ff0-ae7c-7a8a6b3dbfd0",
+            "document_id": "b59d2416-8a6a-426d-8b2c-f231a0b400b7",
+            "document_filename": "Obsidian_Group_AI_Call_Notes.docx"
+          }
+        ],
+        "confidence": "medium",
+        "description": "COO wants weekly adoption reporting by region, with a clear view of blockers, training completion, and support handling time, as noted in chunk 6a59282d-634b-4ff0-ae7c-7a8a6b3dbfd0"
+      }
+    ],
+    "conflicts": [],
+    "stakeholders": [],
+    "recommendations": [
+      {
+        "title": "Publish milestone map",
+        "evidence": [
+          {
+            "snippet": "[Risk Register \u00b7 RiskRegister] Risk ID: R-05 | Risk: Rollout timeline uncertainty | Category: Governance | Severity: Medium | Probability: Medium | Impact: Medium | Owner: Regional Ops | Status: Open | Mitigation: Publish milestone map and decision log | Evidence / Trigger: Different comments mentio\u2026",
+            "chunk_id": "1af69c44-5c46-4a06-a417-ce3862428962",
+            "document_id": "3a0c851c-f1be-4220-ae42-726eea8f4b5a",
+            "document_filename": "Obsidian_Group_Change_Data_Pack.xlsx"
+          }
+        ],
+        "priority": "P1",
+        "confidence": "medium",
+        "description": "Create and share a milestone map to mitigate rollout timeline uncertainty, expected to reduce confusion and increase trust",
+        "addresses_risks": [
+          "R-05"
+        ]
+      },
+      {
+        "title": "Create programme narrative",
+        "evidence": [
+          {
+            "snippet": "# 7. Action items\n\nID: A-01 | Owner: Elena Brooks | Action: Create a single programme narrative and communication pack. | Due: 24 April 2026 | Status: Open",
+            "chunk_id": "8d9734c7-25a5-444c-ba4f-baa74446d065",
+            "document_id": "b59d2416-8a6a-426d-8b2c-f231a0b400b7",
+            "document_filename": "Obsidian_Group_AI_Call_Notes.docx"
+          }
+        ],
+        "priority": "P2",
+        "confidence": "medium",
+        "description": "Develop a single programme narrative and communication pack to ensure consistent messaging, expected to improve stakeholder understanding and engagement",
+        "addresses_risks": []
+      },
+      {
+        "title": "Establish weekly regional view",
+        "evidence": [
+          {
+            "snippet": "# 3. Speaker notes and transcript-style excerpts\n\nAmelia Hart, CEO: \u201cWe need this to feel like a customer experience programme. If people hear automation and assume cuts, we will lose trust before we start.\u201d\n\nMarcus Reed, COO: \u201cI do not want another reporting layer that arrives late and is impossibl\u2026",
+            "chunk_id": "b597f272-9345-480d-974b-cefc757eec4a",
+            "document_id": "b59d2416-8a6a-426d-8b2c-f231a0b400b7",
+            "document_filename": "Obsidian_Group_AI_Call_Notes.docx"
+          },
+          {
+            "snippet": "[Comms Calendar \u00b7 CommsCalendar] Date: 2026-05-03 | Audience: Executive leadership | Channel: Dashboard email | Message Theme: Adoption, sentiment, blockers | Owner: COO Office | Status: In progress | Dependency: KPI definitions | Notes: Need one view by region",
+            "chunk_id": "62d81354-fd44-48a2-a04d-73afaba5f96c",
+            "document_id": "3a0c851c-f1be-4220-ae42-726eea8f4b5a",
+            "document_filename": "Obsidian_Group_Change_Data_Pack.xlsx"
+          }
+        ],
+        "priority": "P1",
+        "confidence": "high",
+        "description": "Design and implement a weekly view by region to track progress and spot blockers, expected to enhance executive decision-making and programme control",
+        "addresses_risks": []
+      },
+      {
+        "title": "Validate regional rollout dates",
+        "evidence": [
+          {
+            "snippet": "# 7. Action items\n\nID: A-04 | Owner: Priya Shah | Action: Validate regional rollout dates with each regional director. | Due: 29 April 2026 | Status: Open",
+            "chunk_id": "ab0286b9-2b91-432e-a3ee-5c21fcae2cbb",
+            "document_id": "b59d2416-8a6a-426d-8b2c-f231a0b400b7",
+            "document_filename": "Obsidian_Group_AI_Call_Notes.docx"
+          }
+        ],
+        "priority": "P2",
+        "confidence": "medium",
+        "description": "Confirm regional rollout dates with each regional director to ensure a coordinated approach, expected to reduce timeline uncertainty and improve stakeholder confidence",
+        "addresses_risks": [
+          "R-05"
+        ]
+      },
+      {
+        "title": "Develop simple escalation process",
+        "evidence": [
+          {
+            "snippet": "# 3. Speaker notes and transcript-style excerpts\n\nAmelia Hart, CEO: \u201cWe need this to feel like a customer experience programme. If people hear automation and assume cuts, we will lose trust before we start.\u201d\n\nMarcus Reed, COO: \u201cI do not want another reporting layer that arrives late and is impossibl\u2026",
+            "chunk_id": "b597f272-9345-480d-974b-cefc757eec4a",
+            "document_id": "b59d2416-8a6a-426d-8b2c-f231a0b400b7",
+            "document_filename": "Obsidian_Group_AI_Call_Notes.docx"
+          },
+          {
+            "snippet": "# 7. Action items\n\nID: A-05 | Owner: Marcus Reed | Action: Confirm executive dashboard cadence and escalation thresholds. | Due: 30 April 2026 | Status: Open",
+            "chunk_id": "33e6c029-9044-4f78-bdb5-86ceb075c9fb",
+            "document_id": "b59d2416-8a6a-426d-8b2c-f231a0b400b7",
+            "document_filename": "Obsidian_Group_AI_Call_Notes.docx"
+          }
+        ],
+        "priority": "P2",
+        "confidence": "medium",
+        "description": "Establish a simple way to spot blockers and escalate issues, expected to facilitate prompt issue resolution and minimize programme delays",
+        "addresses_risks": []
+      }
+    ],
+    "executive_summary": {
+      "body": "The programme aims to improve customer experience, consistency, and reduce repetitive manual work. A weekly change dashboard will be created for executives and regional leaders. Store managers will receive a manager enablement pack before the next regional rollout wave. Customer service communications will include a clear statement on role impact, retraining, and support. ",
+      "evidence": [
+        {
+          "snippet": "# 4. Decisions and working assumptions\n\nProgramme narrative will focus on customer experience, consistency, and reducing repetitive manual work.\n\nA weekly change dashboard will be created for executives and regional leaders.\n\nStore managers will receive a manager enablement pack before the next regi\u2026",
+          "chunk_id": "d1c0f74b-e734-454e-b9d5-6ab922eb419b",
+          "document_id": "b59d2416-8a6a-426d-8b2c-f231a0b400b7",
+          "document_filename": "Obsidian_Group_AI_Call_Notes.docx"
+        },
+        {
+          "snippet": "# 3. Speaker notes and transcript-style excerpts\n\nAmelia Hart, CEO: \u201cWe need this to feel like a customer experience programme. If people hear automation and assume cuts, we will lose trust before we start.\u201d\n\nMarcus Reed, COO: \u201cI do not want another reporting layer that arrives late and is impossibl\u2026",
+          "chunk_id": "b597f272-9345-480d-974b-cefc757eec4a",
+          "document_id": "b59d2416-8a6a-426d-8b2c-f231a0b400b7",
+          "document_filename": "Obsidian_Group_AI_Call_Notes.docx"
+        },
+        {
+          "snippet": "[Stakeholders \u00b7 StakeholderMap] Stakeholder Group: Customer service teams | Scope: Function | Influence: Medium | Current Sentiment: Anxious | Primary Concern: Role changes and automation | Recommended Message: The programme reduces repetitive work and includes retraining and support | Preferred Cha\u2026",
+          "chunk_id": "4f554abd-d527-4327-873b-6f970718952f",
+          "document_id": "3a0c851c-f1be-4220-ae42-726eea8f4b5a",
+          "document_filename": "Obsidian_Group_Change_Data_Pack.xlsx"
+        }
+      ],
+      "headline": "Change programme focuses on customer experience",
+      "confidence": "medium"
+    }
+  }
+}

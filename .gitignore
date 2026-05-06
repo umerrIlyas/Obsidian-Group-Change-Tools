@@ -61,3 +61,11 @@ models/
 
 # Generated outputs (keep examples/ but ignore scratch)
 scratch/
+
+# development notes files
+Notes.md                                                  
+task.md
+plan.md                                                                                                                                                                                                                     
+tickets.md
+finish_off.md                                                                                                                                                                                                               
+.claude/ 
