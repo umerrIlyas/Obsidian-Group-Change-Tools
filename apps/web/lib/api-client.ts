@@ -117,6 +117,40 @@ export type RetrieveResponse = {
   hits: RetrievedHit[];
 };
 
+export type Neutrals = {
+  stone: string;
+  hairline: string;
+  fog: string;
+};
+
+export type BrandProfile = {
+  id: string;
+  project_id: string;
+  primary_color: string;
+  secondary_color: string;
+  accent_color: string;
+  neutrals: Neutrals;
+  font_heading: string;
+  font_body: string;
+  logo_url: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type UpdateBrandPayload = {
+  primary_color: string;
+  secondary_color: string;
+  accent_color: string;
+  neutrals: Neutrals;
+  font_heading: string;
+  font_body: string;
+};
+
+export type PaletteSuggestion = {
+  hex: string;
+  population: number;
+};
+
 export const api = {
   health: () =>
     apiFetch<{
@@ -158,4 +192,50 @@ export const api = {
         body,
       }),
   },
+
+  brand: {
+    get: async (projectId: string): Promise<BrandProfile | null> => {
+      try {
+        return await apiFetch<BrandProfile>(`/projects/${projectId}/brand`);
+      } catch (e) {
+        if (e instanceof ApiError && e.status === 404) return null;
+        throw e;
+      }
+    },
+    update: (projectId: string, body: UpdateBrandPayload) =>
+      apiFetch<BrandProfile>(`/projects/${projectId}/brand`, {
+        method: "PUT",
+        body,
+      }),
+    updateWithLogo: (projectId: string, body: UpdateBrandPayload, logo: File | null) => {
+      const form = new FormData();
+      form.append("payload", JSON.stringify(body));
+      if (logo) form.append("logo", logo);
+      return apiFetch<BrandProfile>(`/projects/${projectId}/brand`, {
+        method: "POST",
+        body: form,
+      });
+    },
+    applyObsidianPreset: (projectId: string) =>
+      apiFetch<BrandProfile>(`/projects/${projectId}/brand/preset`, {
+        method: "POST",
+      }),
+    suggestPalette: (projectId: string, logo: File) => {
+      const form = new FormData();
+      form.append("logo", logo);
+      return apiFetch<{ suggestions: PaletteSuggestion[] }>(
+        `/projects/${projectId}/brand/palette-suggest`,
+        { method: "POST", body: form },
+      );
+    },
+  },
 };
+
+/**
+ * Build an absolute URL for a backend asset (e.g. logo image).
+ * Backend logo_url is a relative path; the frontend may run on a different origin.
+ */
+export function backendUrl(path: string): string {
+  const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+  return `${base.replace(/\/+$/, "")}/${path.replace(/^\/+/, "")}`;
+}

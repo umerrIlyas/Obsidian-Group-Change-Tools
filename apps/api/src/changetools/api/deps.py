@@ -20,11 +20,13 @@ from changetools.infrastructure.embeddings import (
 )
 from changetools.infrastructure.llm import LLMProvider, build_llm_provider
 from changetools.infrastructure.storage import StorageProvider, build_storage_provider
+from changetools.repositories.brand import BrandRepository
 from changetools.repositories.documents import (
     DocumentRepository,
     ProcessingJobRepository,
 )
 from changetools.repositories.projects import ProjectRepository
+from changetools.services.brand_service import BrandService
 from changetools.services.document_service import DocumentService
 from changetools.services.ingestion_service import IngestionService
 from changetools.services.projects_service import ProjectsService
@@ -108,3 +110,14 @@ def get_retrieval_service(
     embeddings: EmbeddingProvider = Depends(get_embeddings),
 ) -> RetrievalService:
     return RetrievalService(session=session, embeddings=embeddings)
+
+
+def get_brand_service(
+    session: AsyncSession = Depends(get_db),
+    storage: StorageProvider = Depends(get_storage),
+) -> BrandService:
+    return BrandService(
+        brand=BrandRepository(session),
+        projects=ProjectRepository(session),
+        storage=storage,
+    )
